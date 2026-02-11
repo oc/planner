@@ -109,28 +109,13 @@
         <h3 class="text-sm font-medium text-gray-700 mb-2">
           Comments (<%= @card.comments.count %>)
         </h3>
-        <div class="space-y-3">
-          <% @card.comments.recent.limit(5).each do |comment| %>
-            <div class="flex space-x-2">
-              <img src="<%= comment.user.avatar %>" alt="<%= comment.user.name %>" class="w-6 h-6 rounded-full">
-              <div>
-                <div class="text-sm">
-                  <span class="font-medium text-gray-900"><%= comment.user.name %></span>
-                  <span class="text-gray-500"><%= time_ago_in_words(comment.created_at) %> ago</span>
-                </div>
-                <p class="text-sm text-gray-600"><%= comment.body %></p>
-              </div>
-            </div>
+        <div id="comments" class="space-y-3">
+          <% @card.comments.recent.each do |comment| %>
+            <%= render partial: "comments/comment", locals: { comment: comment } %>
           <% end %>
         </div>
 
-        <%= form_with url: product_card_comments_path(@product, @card), class: "mt-3" do |form| %>
-          <%= form.text_area :body,
-              placeholder: "Add a comment...",
-              rows: 2,
-              class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" %>
-          <%= form.submit "Comment", class: "mt-2 bg-blue-600 text-white px-3 py-1.5 rounded text-sm font-medium hover:bg-blue-700 cursor-pointer" %>
-        <% end %>
+        <%= render partial: "comments/form", locals: { card: @card, product: @product } %>
       </div>
 
       <div>

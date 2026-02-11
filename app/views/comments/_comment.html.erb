@@ -1,0 +1,10 @@
+<div id="<%= dom_id(comment) %>" class="flex space-x-2">
+  <img src="<%= comment.user.avatar %>" alt="<%= comment.user.name %>" class="w-6 h-6 rounded-full flex-shrink-0">
+  <div class="flex-1">
+    <div class="text-sm">
+      <span class="font-medium text-gray-900"><%= comment.user.name %></span>
+      <span class="text-gray-500"><%= time_ago_in_words(comment.created_at) %> ago</span>
+    </div>
+    <p class="text-sm text-gray-600 mt-1"><%= comment.body %></p>
+  </div>
+</div>
