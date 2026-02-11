@@ -4,7 +4,7 @@ class Card < ApplicationRecord
   STAGES = %w[opportunity discovery definition feasibility commitment build validate operate done].freeze
 
   GATE_REQUIREMENTS = {
-    opportunity: %w[named_customer stated_problem quantified_value],
+    opportunity: %w[named_customer stated_problem quantified_value okr_linked],
     discovery: %w[problem_statement success_criteria user_segments],
     definition: %w[scenarios_exist acceptance_criteria ui_direction],
     feasibility: %w[feasibility_assessment effort_estimate risks_identified],
@@ -12,6 +12,12 @@ class Card < ApplicationRecord
     build: %w[implementation_complete criteria_verified docs_updated],
     validate: %w[customer_feedback success_measured okr_impact_measured],
     operate: %w[monitoring_active runbooks_created deprecation_criteria]
+  }.freeze
+
+  AUTO_GATES = {
+    okr_linked: ->(card) { card.card_key_results.any? },
+    scenarios_exist: ->(card) { card.scenarios.any? },
+    okr_impact_measured: ->(card) { card.all_impacts_recorded? }
   }.freeze
 
   TYPE_COLORS = {
@@ -53,7 +59,17 @@ class Card < ApplicationRecord
   end
 
   def gate_complete?(gate_key)
-    gate_checklist.dig(stage, gate_key.to_s) == true
+    auto_check = AUTO_GATES[gate_key.to_sym]
+    if auto_check
+      auto_check.call(self)
+    else
+      gate_checklist.dig(stage, gate_key.to_s) == true
+    end
+  end
+
+  def all_impacts_recorded?
+    return true if card_key_results.empty?
+    card_key_results.all? { |ckr| ckr.actual_impact.present? }
   end
 
   def gate_completion_count

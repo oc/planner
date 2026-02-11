@@ -1,7 +1,7 @@
 class CardKeyResultsController < ApplicationController
   before_action :set_product
   before_action :set_card
-  before_action :set_card_key_result, only: [:destroy]
+  before_action :set_card_key_result, only: [:edit, :update, :destroy]
 
   def new
     @card_key_result = @card.card_key_results.build
@@ -19,6 +19,20 @@ class CardKeyResultsController < ApplicationController
     else
       @available_key_results = available_key_results
       render :new, status: :unprocessable_entity
+    end
+  end
+
+  def edit
+  end
+
+  def update
+    if @card_key_result.update(card_key_result_params)
+      respond_to do |format|
+        format.html { redirect_to [@product, @card], notice: "Impact recorded." }
+        format.turbo_stream
+      end
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -45,7 +59,7 @@ class CardKeyResultsController < ApplicationController
   end
 
   def card_key_result_params
-    params.require(:card_key_result).permit(:key_result_id, :expected_impact)
+    params.require(:card_key_result).permit(:key_result_id, :expected_impact, :actual_impact)
   end
 
   def available_key_results

@@ -29,7 +29,7 @@ Rails.application.routes.draw do
       end
       resources :comments, only: [:create, :destroy]
       resources :scenarios, only: [:new, :create, :edit, :update, :destroy]
-      resources :card_key_results, only: [:new, :create, :destroy], path: "key_results"
+      resources :card_key_results, only: [:new, :create, :edit, :update, :destroy], path: "key_results"
     end
   end
 
