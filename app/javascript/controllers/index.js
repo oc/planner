@@ -12,3 +12,6 @@ application.register("kanban", KanbanController)
 
 import GateChecklistController from "./gate_checklist_controller"
 application.register("gate-checklist", GateChecklistController)
+
+import CardTypeController from "./card_type_controller"
+application.register("card-type", CardTypeController)

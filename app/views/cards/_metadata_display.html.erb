@@ -1,0 +1,100 @@
+<% return if card.metadata.blank? || card.metadata.values.all?(&:blank?) %>
+
+<div class="border-t border-gray-200 pt-4">
+  <% case card.card_type %>
+  <% when "opportunity" %>
+    <h3 class="text-sm font-medium text-gray-700 mb-3">Opportunity Details</h3>
+    <dl class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+      <% if card.metadata["customer_name"].present? %>
+        <dt class="text-gray-500">Customer</dt>
+        <dd class="text-gray-900"><%= card.metadata["customer_name"] %></dd>
+      <% end %>
+      <% if card.metadata["commitment_level"].present? %>
+        <dt class="text-gray-500">Commitment</dt>
+        <dd class="text-gray-900 capitalize"><%= card.metadata["commitment_level"] %></dd>
+      <% end %>
+      <% if card.metadata["quantified_value"].present? %>
+        <dt class="text-gray-500">Value</dt>
+        <dd class="text-gray-900"><%= card.metadata["quantified_value"] %></dd>
+      <% end %>
+    </dl>
+    <% if card.metadata["stated_problem"].present? %>
+      <div class="mt-3">
+        <dt class="text-sm text-gray-500">Stated Problem</dt>
+        <dd class="mt-1 text-sm text-gray-900"><%= card.metadata["stated_problem"] %></dd>
+      </div>
+    <% end %>
+
+  <% when "feature" %>
+    <h3 class="text-sm font-medium text-gray-700 mb-3">Feature Details</h3>
+    <dl class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+      <% if card.metadata["effort_estimate"].present? %>
+        <dt class="text-gray-500">Effort</dt>
+        <dd class="text-gray-900"><%= card.metadata["effort_estimate"] %></dd>
+      <% end %>
+      <% if card.metadata["feasibility"].present? %>
+        <dt class="text-gray-500">Feasibility</dt>
+        <dd class="text-gray-900 capitalize"><%= card.metadata["feasibility"] %></dd>
+      <% end %>
+    </dl>
+    <% if card.metadata["scope_in"].present? %>
+      <div class="mt-3">
+        <dt class="text-sm text-gray-500">In Scope</dt>
+        <dd class="mt-1 text-sm text-gray-900"><%= card.metadata["scope_in"] %></dd>
+      </div>
+    <% end %>
+    <% if card.metadata["scope_out"].present? %>
+      <div class="mt-3">
+        <dt class="text-sm text-gray-500">Out of Scope</dt>
+        <dd class="mt-1 text-sm text-gray-900"><%= card.metadata["scope_out"] %></dd>
+      </div>
+    <% end %>
+
+  <% when "task" %>
+    <h3 class="text-sm font-medium text-gray-700 mb-3">Task Details</h3>
+    <dl class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+      <% if card.metadata["due_date"].present? %>
+        <dt class="text-gray-500">Due Date</dt>
+        <dd class="text-gray-900"><%= Date.parse(card.metadata["due_date"]).strftime("%b %d, %Y") rescue card.metadata["due_date"] %></dd>
+      <% end %>
+      <% if card.metadata["external_ref"].present? %>
+        <dt class="text-gray-500">External Ref</dt>
+        <dd class="text-gray-900"><%= card.metadata["external_ref"] %></dd>
+      <% end %>
+    </dl>
+
+  <% when "issue" %>
+    <h3 class="text-sm font-medium text-gray-700 mb-3">Issue Details</h3>
+    <dl class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+      <% if card.metadata["severity"].present? %>
+        <dt class="text-gray-500">Severity</dt>
+        <dd class="text-gray-900 uppercase"><%= card.metadata["severity"] %></dd>
+      <% end %>
+      <% if card.metadata["reported_by"].present? %>
+        <dt class="text-gray-500">Reported By</dt>
+        <dd class="text-gray-900"><%= card.metadata["reported_by"] %></dd>
+      <% end %>
+    </dl>
+    <% if card.metadata["reproduction_steps"].present? %>
+      <div class="mt-3">
+        <dt class="text-sm text-gray-500">Reproduction Steps</dt>
+        <dd class="mt-1 text-sm text-gray-900 whitespace-pre-wrap"><%= card.metadata["reproduction_steps"] %></dd>
+      </div>
+    <% end %>
+
+  <% when "jtbd" %>
+    <h3 class="text-sm font-medium text-gray-700 mb-3">Job to Be Done</h3>
+    <% if card.metadata["job_statement"].present? %>
+      <div>
+        <dt class="text-sm text-gray-500">Job Statement</dt>
+        <dd class="mt-1 text-sm text-gray-900"><%= card.metadata["job_statement"] %></dd>
+      </div>
+    <% end %>
+    <% if card.metadata["context"].present? %>
+      <div class="mt-3">
+        <dt class="text-sm text-gray-500">Context</dt>
+        <dd class="mt-1 text-sm text-gray-900"><%= card.metadata["context"] %></dd>
+      </div>
+    <% end %>
+  <% end %>
+</div>

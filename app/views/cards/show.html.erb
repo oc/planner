@@ -65,6 +65,8 @@
         </div>
       <% end %>
 
+      <%= render partial: "cards/metadata_display", locals: { card: @card } %>
+
       <div data-controller="gate-checklist"
            data-gate-checklist-card-id-value="<%= @card.id %>"
            data-gate-checklist-product-slug-value="<%= @product.slug %>"

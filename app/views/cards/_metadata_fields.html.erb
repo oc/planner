@@ -1,0 +1,150 @@
+<div data-controller="card-type" data-card-type-current-value="<%= card.card_type %>">
+  <% Card.card_types.keys.each do |type| %>
+    <div data-card-type-target="fields"
+         data-type="<%= type %>"
+         class="<%= 'hidden' unless card.card_type == type %> space-y-4 mt-4 p-4 bg-gray-50 rounded-lg">
+
+      <% case type %>
+      <% when "opportunity" %>
+        <h4 class="text-sm font-medium text-gray-700">Opportunity Details</h4>
+        <div>
+          <%= form.label :customer_name, "Customer Name", class: "block text-sm font-medium text-gray-600" %>
+          <%= form.text_field :customer_name,
+              value: card.metadata["customer_name"],
+              name: "card[metadata][customer_name]",
+              class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm",
+              placeholder: "e.g., Equinor" %>
+        </div>
+        <div>
+          <%= form.label :stated_problem, "Stated Problem", class: "block text-sm font-medium text-gray-600" %>
+          <%= form.text_area :stated_problem,
+              value: card.metadata["stated_problem"],
+              name: "card[metadata][stated_problem]",
+              rows: 2,
+              class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm",
+              placeholder: "Problem in customer's words..." %>
+        </div>
+        <div>
+          <%= form.label :quantified_value, "Quantified Value", class: "block text-sm font-medium text-gray-600" %>
+          <%= form.text_field :quantified_value,
+              value: card.metadata["quantified_value"],
+              name: "card[metadata][quantified_value]",
+              class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm",
+              placeholder: "e.g., $50k ARR, 4 hours saved daily" %>
+        </div>
+        <div>
+          <%= form.label :commitment_level, "Commitment Level", class: "block text-sm font-medium text-gray-600" %>
+          <%= form.select :commitment_level,
+              [["Interested", "interested"], ["Piloting", "piloting"], ["Paying", "paying"]],
+              { selected: card.metadata["commitment_level"] },
+              name: "card[metadata][commitment_level]",
+              class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
+        </div>
+
+      <% when "feature" %>
+        <h4 class="text-sm font-medium text-gray-700">Feature Details</h4>
+        <div>
+          <%= form.label :effort_estimate, "Effort Estimate", class: "block text-sm font-medium text-gray-600" %>
+          <%= form.select :effort_estimate,
+              [["Small (S)", "S"], ["Medium (M)", "M"], ["Large (L)", "L"], ["Extra Large (XL)", "XL"]],
+              { selected: card.metadata["effort_estimate"], include_blank: "Select..." },
+              name: "card[metadata][effort_estimate]",
+              class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
+        </div>
+        <div>
+          <%= form.label :feasibility, "Feasibility", class: "block text-sm font-medium text-gray-600" %>
+          <%= form.select :feasibility,
+              [["Yes", "yes"], ["No", "no"], ["Conditional", "conditional"]],
+              { selected: card.metadata["feasibility"], include_blank: "Not assessed" },
+              name: "card[metadata][feasibility]",
+              class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
+        </div>
+        <div>
+          <%= form.label :scope_in, "In Scope", class: "block text-sm font-medium text-gray-600" %>
+          <%= form.text_area :scope_in,
+              value: card.metadata["scope_in"],
+              name: "card[metadata][scope_in]",
+              rows: 2,
+              class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm",
+              placeholder: "What's included..." %>
+        </div>
+        <div>
+          <%= form.label :scope_out, "Out of Scope", class: "block text-sm font-medium text-gray-600" %>
+          <%= form.text_area :scope_out,
+              value: card.metadata["scope_out"],
+              name: "card[metadata][scope_out]",
+              rows: 2,
+              class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm",
+              placeholder: "What's explicitly excluded..." %>
+        </div>
+
+      <% when "task" %>
+        <h4 class="text-sm font-medium text-gray-700">Task Details</h4>
+        <div>
+          <%= form.label :due_date, "Due Date", class: "block text-sm font-medium text-gray-600" %>
+          <%= form.date_field :due_date,
+              value: card.metadata["due_date"],
+              name: "card[metadata][due_date]",
+              class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
+        </div>
+        <div>
+          <%= form.label :external_ref, "External Reference", class: "block text-sm font-medium text-gray-600" %>
+          <%= form.text_field :external_ref,
+              value: card.metadata["external_ref"],
+              name: "card[metadata][external_ref]",
+              class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm",
+              placeholder: "e.g., JIRA-123, GitHub #456" %>
+        </div>
+
+      <% when "issue" %>
+        <h4 class="text-sm font-medium text-gray-700">Issue Details</h4>
+        <div>
+          <%= form.label :severity, "Severity", class: "block text-sm font-medium text-gray-600" %>
+          <%= form.select :severity,
+              [["P1 - Critical", "p1"], ["P2 - High", "p2"], ["P3 - Medium", "p3"], ["P4 - Low", "p4"]],
+              { selected: card.metadata["severity"], include_blank: "Select..." },
+              name: "card[metadata][severity]",
+              class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
+        </div>
+        <div>
+          <%= form.label :reported_by, "Reported By", class: "block text-sm font-medium text-gray-600" %>
+          <%= form.text_field :reported_by,
+              value: card.metadata["reported_by"],
+              name: "card[metadata][reported_by]",
+              class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm",
+              placeholder: "Customer or user name" %>
+        </div>
+        <div>
+          <%= form.label :reproduction_steps, "Reproduction Steps", class: "block text-sm font-medium text-gray-600" %>
+          <%= form.text_area :reproduction_steps,
+              value: card.metadata["reproduction_steps"],
+              name: "card[metadata][reproduction_steps]",
+              rows: 3,
+              class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm",
+              placeholder: "Steps to reproduce the issue..." %>
+        </div>
+
+      <% when "jtbd" %>
+        <h4 class="text-sm font-medium text-gray-700">Job to Be Done</h4>
+        <div>
+          <%= form.label :job_statement, "Job Statement", class: "block text-sm font-medium text-gray-600" %>
+          <%= form.text_area :job_statement,
+              value: card.metadata["job_statement"],
+              name: "card[metadata][job_statement]",
+              rows: 2,
+              class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm",
+              placeholder: "When [situation], I want to [motivation], so I can [outcome]" %>
+        </div>
+        <div>
+          <%= form.label :context, "Context", class: "block text-sm font-medium text-gray-600" %>
+          <%= form.text_area :context,
+              value: card.metadata["context"],
+              name: "card[metadata][context]",
+              rows: 2,
+              class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm",
+              placeholder: "User context and circumstances..." %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

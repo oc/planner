@@ -134,6 +134,9 @@ class CardsController < ApplicationController
   end
 
   def card_params
-    params.require(:card).permit(:title, :description, :card_type, :stage, :priority, :parent_id)
+    params.require(:card).permit(
+      :title, :description, :card_type, :stage, :priority, :parent_id,
+      metadata: {}
+    )
   end
 end
