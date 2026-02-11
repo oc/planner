@@ -79,7 +79,7 @@ export default class extends Controller {
     return cards.length
   }
 
-  async updateCardPosition(cardId, stage, position) {
+  async updateCardPosition(cardId, stage, position, force = false) {
     const url = `/products/${this.productSlugValue}/cards/${cardId}/move`
     const csrfToken = document.querySelector("[name='csrf-token']").content
 
@@ -91,12 +91,23 @@ export default class extends Controller {
           "X-CSRF-Token": csrfToken,
           "Accept": "application/json"
         },
-        body: JSON.stringify({ stage, position })
+        body: JSON.stringify({ stage, position, force: force.toString() })
       })
 
+      const data = await response.json()
+
       if (!response.ok) {
-        console.error("Failed to move card")
-        window.location.reload()
+        if (data.warning) {
+          const confirmed = confirm(`⚠️ ${data.message}\n\nIncomplete gates:\n• ${data.incomplete_gates.map(g => g.replace(/_/g, ' ')).join('\n• ')}`)
+          if (confirmed) {
+            await this.updateCardPosition(cardId, stage, position, true)
+          } else {
+            window.location.reload()
+          }
+        } else {
+          console.error("Failed to move card")
+          window.location.reload()
+        }
       }
     } catch (error) {
       console.error("Error moving card:", error)

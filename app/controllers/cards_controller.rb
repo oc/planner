@@ -59,6 +59,26 @@ class CardsController < ApplicationController
     old_stage = @card.stage
     new_stage = params[:stage]
     new_position = params[:position].to_i
+    force = params[:force] == "true"
+
+    old_stage_index = Card::STAGES.index(old_stage)
+    new_stage_index = Card::STAGES.index(new_stage)
+    moving_forward = new_stage_index > old_stage_index
+
+    if moving_forward && !@card.can_advance? && !force
+      completed, total = @card.gate_completion_count
+      respond_to do |format|
+        format.json do
+          render json: {
+            success: false,
+            warning: true,
+            message: "This card has incomplete gates (#{completed}/#{total}). Move anyway?",
+            incomplete_gates: @card.current_gate_requirements.reject { |r| @card.gate_complete?(r) }
+          }, status: :unprocessable_entity
+        end
+      end
+      return
+    end
 
     @card.stage = new_stage
     @card.insert_at(new_position)
