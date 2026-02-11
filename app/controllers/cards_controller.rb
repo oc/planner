@@ -1,6 +1,6 @@
 class CardsController < ApplicationController
   before_action :set_product
-  before_action :set_card, only: [:show, :edit, :update, :destroy, :move]
+  before_action :set_card, only: [:show, :edit, :update, :destroy, :move, :toggle_gate]
 
   def show
     respond_to do |format|
@@ -79,6 +79,26 @@ class CardsController < ApplicationController
       respond_to do |format|
         format.turbo_stream { render turbo_stream: turbo_stream.replace(@card, partial: "cards/card", locals: { card: @card }) }
         format.json { render json: { success: false, errors: @card.errors }, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def toggle_gate
+    stage = params[:stage]
+    gate = params[:gate]
+    checked = params[:checked] == "true"
+
+    @card.gate_checklist[stage] ||= {}
+    @card.gate_checklist[stage][gate] = checked
+
+    if @card.save
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("gate_progress_#{@card.id}", partial: "cards/gate_progress", locals: { card: @card }) }
+        format.json { render json: { success: true, completed: @card.gate_completion_count } }
+      end
+    else
+      respond_to do |format|
+        format.json { render json: { success: false }, status: :unprocessable_entity }
       end
     end
   end

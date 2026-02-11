@@ -9,3 +9,6 @@ application.register("hello", HelloController)
 
 import KanbanController from "./kanban_controller"
 application.register("kanban", KanbanController)
+
+import GateChecklistController from "./gate_checklist_controller"
+application.register("gate-checklist", GateChecklistController)

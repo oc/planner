@@ -16,6 +16,7 @@ Rails.application.routes.draw do
     resources :cards do
       member do
         patch :move
+        patch :toggle_gate
       end
       resources :comments, only: [:create, :destroy]
     end
