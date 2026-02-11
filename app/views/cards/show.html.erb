@@ -128,13 +128,12 @@
 
       <div>
         <h3 class="text-sm font-medium text-gray-700 mb-2">Activity</h3>
-        <div class="space-y-2">
-          <% @card.activities.recent.limit(10).each do |activity| %>
-            <div class="text-sm text-gray-600">
-              <span class="font-medium"><%= activity.user&.name || "System" %></span>
-              <%= activity.action %>
-              <span class="text-gray-400"><%= time_ago_in_words(activity.created_at) %> ago</span>
-            </div>
+        <div id="activities" class="space-y-3">
+          <% @card.activities.recent.limit(15).each do |activity| %>
+            <%= render partial: "activities/activity", locals: { activity: activity } %>
+          <% end %>
+          <% if @card.activities.empty? %>
+            <p class="text-sm text-gray-500">No activity yet.</p>
           <% end %>
         </div>
       </div>

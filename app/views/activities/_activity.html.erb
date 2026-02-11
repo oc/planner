@@ -1,0 +1,34 @@
+<%
+  action_text = case activity.action
+  when "created"
+    "created this card"
+  when "updated"
+    changes = activity.change_data || {}
+    if changes["stage"]
+      "moved from #{changes.dig('stage', 'from')&.humanize} to #{changes.dig('stage', 'to')&.humanize}"
+    elsif changes["priority"]
+      "changed priority to #{changes.dig('priority', 'to')}"
+    elsif changes["title"]
+      "updated the title"
+    else
+      "made changes"
+    end
+  when "moved"
+    data = activity.change_data || {}
+    "moved from #{data['from_stage']&.humanize} to #{data['to_stage']&.humanize}"
+  when "commented"
+    "added a comment"
+  else
+    activity.action
+  end
+%>
+<div class="flex items-start space-x-2 text-sm">
+  <% if activity.user %>
+    <img src="<%= activity.user.avatar %>" alt="<%= activity.user.name %>" class="w-5 h-5 rounded-full flex-shrink-0 mt-0.5">
+  <% end %>
+  <div>
+    <span class="font-medium text-gray-900"><%= activity.user&.name || "System" %></span>
+    <span class="text-gray-600"><%= action_text %></span>
+    <span class="text-gray-400 text-xs ml-1"><%= time_ago_in_words(activity.created_at) %> ago</span>
+  </div>
+</div>

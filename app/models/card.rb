@@ -1,4 +1,6 @@
 class Card < ApplicationRecord
+  include Trackable
+
   STAGES = %w[opportunity discovery definition feasibility commitment build validate operate done].freeze
 
   GATE_REQUIREMENTS = {
@@ -32,7 +34,6 @@ class Card < ApplicationRecord
   has_many :comments, dependent: :destroy
   has_many :scenarios, dependent: :destroy
   has_many :external_links, dependent: :destroy
-  has_many :activities, as: :trackable, dependent: :destroy
   has_many :card_key_results, dependent: :destroy
   has_many :key_results, through: :card_key_results
 
