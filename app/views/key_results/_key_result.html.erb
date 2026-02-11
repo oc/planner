@@ -1,0 +1,81 @@
+<%
+  status_colors = {
+    "on_track" => "bg-green-100 text-green-800",
+    "at_risk" => "bg-yellow-100 text-yellow-800",
+    "behind" => "bg-red-100 text-red-800",
+    "achieved" => "bg-blue-100 text-blue-800"
+  }
+  progress = key_result.progress_percentage
+  bar_color = case key_result.status
+              when "achieved" then "bg-blue-600"
+              when "on_track" then "bg-green-500"
+              when "at_risk" then "bg-yellow-500"
+              else "bg-red-500"
+              end
+%>
+
+<%= turbo_frame_tag key_result do %>
+  <div class="bg-gray-50 rounded-lg p-3"
+       data-controller="key-result"
+       data-key-result-url-value="<%= update_progress_objective_key_result_path(key_result.objective, key_result) %>">
+    <div class="flex items-start justify-between">
+      <div class="flex-1">
+        <div class="flex items-center space-x-2">
+          <span class="text-sm font-medium text-gray-800"><%= key_result.title %></span>
+          <span class="inline-block px-1.5 py-0.5 text-xs font-medium rounded <%= status_colors[key_result.status] %>">
+            <%= key_result.status.humanize %>
+          </span>
+        </div>
+        <div class="mt-2 flex items-center space-x-2">
+          <div class="flex-1 bg-gray-200 rounded-full h-1.5">
+            <div class="<%= bar_color %> h-1.5 rounded-full transition-all duration-300"
+                 style="width: <%= progress %>%"></div>
+          </div>
+          <span class="text-xs text-gray-500 w-20 text-right">
+            <span data-key-result-target="current"><%= key_result.current_value.to_i %></span>/<%= key_result.target_value.to_i %> <%= key_result.unit %>
+          </span>
+        </div>
+      </div>
+      <div class="flex items-center space-x-1 ml-3">
+        <button type="button"
+                class="text-gray-400 hover:text-gray-600 p-1"
+                data-action="click->key-result#decrement"
+                title="Decrease">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+          </svg>
+        </button>
+        <button type="button"
+                class="text-gray-400 hover:text-gray-600 p-1"
+                data-action="click->key-result#increment"
+                title="Increase">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          </svg>
+        </button>
+        <%= link_to edit_objective_key_result_path(key_result.objective, key_result),
+            class: "text-gray-400 hover:text-gray-600 p-1",
+            data: { turbo_frame: "modal" } do %>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+          </svg>
+        <% end %>
+      </div>
+    </div>
+
+    <% if key_result.cards.any? %>
+      <div class="mt-2 flex flex-wrap gap-1">
+        <% key_result.cards.limit(3).each do |card| %>
+          <span class="inline-block px-1.5 py-0.5 text-xs bg-white border border-gray-200 rounded text-gray-600 truncate max-w-32">
+            <%= card.title %>
+          </span>
+        <% end %>
+        <% if key_result.cards.count > 3 %>
+          <span class="inline-block px-1.5 py-0.5 text-xs text-gray-500">
+            +<%= key_result.cards.count - 3 %> more
+          </span>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

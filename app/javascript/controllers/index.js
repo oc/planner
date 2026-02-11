@@ -15,3 +15,6 @@ application.register("gate-checklist", GateChecklistController)
 
 import CardTypeController from "./card_type_controller"
 application.register("card-type", CardTypeController)
+
+import KeyResultController from "./key_result_controller"
+application.register("key-result", KeyResultController)

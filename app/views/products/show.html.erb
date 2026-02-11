@@ -6,6 +6,8 @@
         <span class="text-sm text-gray-500"><%= @product.cards.count %> cards</span>
       </div>
       <div class="flex items-center space-x-3">
+        <%= link_to "OKRs", product_objectives_path(@product),
+            class: "text-sm text-gray-600 hover:text-gray-900" %>
         <%= link_to new_product_card_path(@product),
             class: "bg-blue-600 text-white px-3 py-1.5 rounded text-sm font-medium hover:bg-blue-700",
             data: { turbo_frame: "modal" } do %>

@@ -12,7 +12,16 @@ Rails.application.routes.draw do
   end
   root "home#index"
 
+  resources :objectives, except: [:show] do
+    resources :key_results, only: [:new, :create, :edit, :update, :destroy] do
+      member do
+        patch :update_progress
+      end
+    end
+  end
+
   resources :products, param: :slug do
+    resources :objectives, only: [:index, :new, :create], controller: "product_objectives"
     resources :cards do
       member do
         patch :move
@@ -20,6 +29,7 @@ Rails.application.routes.draw do
       end
       resources :comments, only: [:create, :destroy]
       resources :scenarios, only: [:new, :create, :edit, :update, :destroy]
+      resources :card_key_results, only: [:new, :create, :destroy], path: "key_results"
     end
   end
 

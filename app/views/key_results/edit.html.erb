@@ -1,0 +1,11 @@
+<%= turbo_frame_tag "modal" do %>
+  <div class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+      <div class="px-4 py-3 border-b border-gray-200">
+        <h2 class="text-lg font-medium text-gray-900">Edit Key Result</h2>
+        <p class="text-sm text-gray-500 mt-1">For: <%= @objective.title %></p>
+      </div>
+      <%= render partial: "key_results/form", locals: { key_result: @key_result, objective: @objective } %>
+    </div>
+  </div>
+<% end %>

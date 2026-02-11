@@ -1,0 +1,56 @@
+<%= form_with model: [objective, key_result], class: "p-4 space-y-4" do |form| %>
+  <% if key_result.errors.any? %>
+    <div class="bg-red-50 border-l-4 border-red-400 p-4">
+      <ul class="list-disc list-inside text-sm text-red-700">
+        <% key_result.errors.full_messages.each do |error| %>
+          <li><%= error %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :title, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_field :title,
+        class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm",
+        placeholder: "e.g., Achieve 95% customer satisfaction",
+        autofocus: true %>
+  </div>
+
+  <div class="grid grid-cols-3 gap-4">
+    <div>
+      <%= form.label :target_value, "Target", class: "block text-sm font-medium text-gray-700" %>
+      <%= form.number_field :target_value,
+          step: "any",
+          class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm",
+          placeholder: "100" %>
+    </div>
+    <div>
+      <%= form.label :current_value, "Current", class: "block text-sm font-medium text-gray-700" %>
+      <%= form.number_field :current_value,
+          step: "any",
+          class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm",
+          placeholder: "0" %>
+    </div>
+    <div>
+      <%= form.label :unit, class: "block text-sm font-medium text-gray-700" %>
+      <%= form.text_field :unit,
+          class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm",
+          placeholder: "e.g., %, users" %>
+    </div>
+  </div>
+
+  <div>
+    <%= form.label :status, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.select :status,
+        KeyResult.statuses.keys.map { |s| [s.humanize, s] },
+        {},
+        class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
+  </div>
+
+  <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+    <%= link_to "Cancel", objectives_path, class: "text-sm text-gray-600 hover:text-gray-900" %>
+    <%= form.submit key_result.persisted? ? "Update Key Result" : "Create Key Result",
+        class: "bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 cursor-pointer" %>
+  </div>
+<% end %>
