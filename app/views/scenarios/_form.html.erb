@@ -1,0 +1,60 @@
+<%= form_with model: [@product, @card, scenario], class: "space-y-4" do |form| %>
+  <% if scenario.errors.any? %>
+    <div class="bg-red-50 border-l-4 border-red-400 p-4">
+      <ul class="list-disc list-inside text-sm text-red-700">
+        <% scenario.errors.full_messages.each do |error| %>
+          <li><%= error %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :title, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_field :title,
+        class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm",
+        placeholder: "e.g., User sees urgent articles first",
+        autofocus: true %>
+  </div>
+
+  <div>
+    <%= form.label :given, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_area :given,
+        rows: 2,
+        class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm",
+        placeholder: "The initial context or state..." %>
+    <p class="mt-1 text-xs text-gray-500">The initial context or precondition</p>
+  </div>
+
+  <div>
+    <%= form.label :when_clause, "When", class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_area :when_clause,
+        rows: 2,
+        class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm",
+        placeholder: "The action or event that triggers..." %>
+    <p class="mt-1 text-xs text-gray-500">The action or event that triggers the behavior</p>
+  </div>
+
+  <div>
+    <%= form.label :then_clause, "Then", class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_area :then_clause,
+        rows: 2,
+        class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm",
+        placeholder: "The expected outcome..." %>
+    <p class="mt-1 text-xs text-gray-500">The expected outcome or result</p>
+  </div>
+
+  <div>
+    <%= form.label :status, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.select :status,
+        Scenario.statuses.keys.map { |s| [s.capitalize, s] },
+        {},
+        class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
+  </div>
+
+  <div class="flex justify-end space-x-3 pt-4">
+    <%= link_to "Cancel", product_card_path(@product, @card), class: "text-sm text-gray-600 hover:text-gray-900" %>
+    <%= form.submit scenario.persisted? ? "Update Scenario" : "Create Scenario",
+        class: "bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 cursor-pointer" %>
+  </div>
+<% end %>

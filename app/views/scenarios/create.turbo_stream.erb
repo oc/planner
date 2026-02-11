@@ -1,0 +1,9 @@
+<%= turbo_stream.append "scenarios" do %>
+  <%= render partial: "scenarios/scenario", locals: { scenario: @scenario } %>
+<% end %>
+
+<%= turbo_stream.update "scenarios_count", @card.scenarios.count %>
+
+<%= turbo_stream.replace "modal" do %>
+  <%= turbo_frame_tag "modal" %>
+<% end %>

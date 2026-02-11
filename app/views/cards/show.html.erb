@@ -93,23 +93,22 @@
       </div>
 
       <div>
-        <h3 class="text-sm font-medium text-gray-700 mb-2">
-          Scenarios (<%= @card.scenarios.count %>)
-        </h3>
-        <% if @card.scenarios.any? %>
-          <div class="space-y-2">
-            <% @card.scenarios.ordered.each do |scenario| %>
-              <div class="bg-gray-50 rounded p-3 text-sm">
-                <div class="font-medium text-gray-900"><%= scenario.title %></div>
-                <% if scenario.given.present? %>
-                  <div class="mt-1 text-gray-600">
-                    <span class="text-gray-500">Given:</span> <%= scenario.given %>
-                  </div>
-                <% end %>
-              </div>
-            <% end %>
-          </div>
-        <% else %>
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="text-sm font-medium text-gray-700">
+            Scenarios (<span id="scenarios_count"><%= @card.scenarios.count %></span>)
+          </h3>
+          <%= link_to new_product_card_scenario_path(@product, @card),
+              class: "text-xs text-blue-600 hover:text-blue-700",
+              data: { turbo_frame: "modal" } do %>
+            + Add scenario
+          <% end %>
+        </div>
+        <div id="scenarios" class="space-y-3">
+          <% @card.scenarios.ordered.each do |scenario| %>
+            <%= render partial: "scenarios/scenario", locals: { scenario: scenario } %>
+          <% end %>
+        </div>
+        <% if @card.scenarios.empty? %>
           <p class="text-sm text-gray-500">No scenarios defined yet.</p>
         <% end %>
       </div>

@@ -1,0 +1,7 @@
+<%= turbo_stream.replace @scenario do %>
+  <%= render partial: "scenarios/scenario", locals: { scenario: @scenario } %>
+<% end %>
+
+<%= turbo_stream.replace "modal" do %>
+  <%= turbo_frame_tag "modal" %>
+<% end %>

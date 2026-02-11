@@ -19,6 +19,7 @@ Rails.application.routes.draw do
         patch :toggle_gate
       end
       resources :comments, only: [:create, :destroy]
+      resources :scenarios, only: [:new, :create, :edit, :update, :destroy]
     end
   end
 

@@ -1,0 +1,13 @@
+<%= turbo_frame_tag "modal" do %>
+  <div class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto">
+      <div class="px-6 py-4 border-b border-gray-200">
+        <h2 class="text-lg font-semibold text-gray-900">New Scenario</h2>
+        <p class="text-sm text-gray-500 mt-1">Define acceptance criteria using Given/When/Then format</p>
+      </div>
+      <div class="p-6">
+        <%= render "form", scenario: @scenario %>
+      </div>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,48 @@
+<%
+  status_colors = {
+    "draft" => "bg-gray-100 text-gray-600",
+    "approved" => "bg-blue-100 text-blue-700",
+    "verified" => "bg-green-100 text-green-700",
+    "failed" => "bg-red-100 text-red-700"
+  }
+%>
+<div id="<%= dom_id(scenario) %>" class="bg-gray-50 rounded-lg p-4 text-sm">
+  <div class="flex justify-between items-start mb-2">
+    <div class="font-medium text-gray-900"><%= scenario.title %></div>
+    <div class="flex items-center space-x-2">
+      <span class="px-2 py-0.5 text-xs rounded <%= status_colors[scenario.status] %>">
+        <%= scenario.status.capitalize %>
+      </span>
+      <%= link_to "Edit",
+          edit_product_card_scenario_path(scenario.card.product, scenario.card, scenario),
+          class: "text-xs text-blue-600 hover:text-blue-700",
+          data: { turbo_frame: "modal" } %>
+      <%= button_to "Delete",
+          product_card_scenario_path(scenario.card.product, scenario.card, scenario),
+          method: :delete,
+          class: "text-xs text-red-600 hover:text-red-700",
+          data: { turbo_confirm: "Delete this scenario?" } %>
+    </div>
+  </div>
+
+  <% if scenario.given.present? %>
+    <div class="mt-2">
+      <span class="font-medium text-gray-500">Given</span>
+      <p class="text-gray-700 mt-0.5"><%= scenario.given %></p>
+    </div>
+  <% end %>
+
+  <% if scenario.when_clause.present? %>
+    <div class="mt-2">
+      <span class="font-medium text-gray-500">When</span>
+      <p class="text-gray-700 mt-0.5"><%= scenario.when_clause %></p>
+    </div>
+  <% end %>
+
+  <% if scenario.then_clause.present? %>
+    <div class="mt-2">
+      <span class="font-medium text-gray-500">Then</span>
+      <p class="text-gray-700 mt-0.5"><%= scenario.then_clause %></p>
+    </div>
+  <% end %>
+</div>
