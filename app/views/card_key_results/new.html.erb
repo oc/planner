@@ -1,0 +1,50 @@
+<%= turbo_frame_tag "modal" do %>
+  <div class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+      <div class="px-4 py-3 border-b border-gray-200">
+        <h2 class="text-lg font-medium text-gray-900">Link to Key Result</h2>
+        <p class="text-sm text-gray-500 mt-1"><%= @card.title %></p>
+      </div>
+
+      <%= form_with model: [@product, @card, @card_key_result], class: "p-4 space-y-4" do |form| %>
+        <% if @card_key_result.errors.any? %>
+          <div class="bg-red-50 border-l-4 border-red-400 p-4">
+            <ul class="list-disc list-inside text-sm text-red-700">
+              <% @card_key_result.errors.full_messages.each do |error| %>
+                <li><%= error %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <div>
+          <%= form.label :key_result_id, "Key Result", class: "block text-sm font-medium text-gray-700" %>
+          <% if @available_key_results.any? %>
+            <%= form.select :key_result_id,
+                @available_key_results.map { |kr| ["#{kr.objective.title} → #{kr.title}", kr.id] },
+                { include_blank: "Select a key result..." },
+                class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
+          <% else %>
+            <p class="mt-1 text-sm text-gray-500">No available key results to link. All key results are already linked or none exist.</p>
+          <% end %>
+        </div>
+
+        <div>
+          <%= form.label :expected_impact, class: "block text-sm font-medium text-gray-700" %>
+          <%= form.text_area :expected_impact,
+              rows: 2,
+              class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm",
+              placeholder: "How will this card contribute to the key result?" %>
+        </div>
+
+        <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+          <%= link_to "Cancel", product_card_path(@product, @card), class: "text-sm text-gray-600 hover:text-gray-900" %>
+          <% if @available_key_results.any? %>
+            <%= form.submit "Link Key Result",
+                class: "bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 cursor-pointer" %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

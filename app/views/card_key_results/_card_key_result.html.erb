@@ -1,0 +1,25 @@
+<%= turbo_frame_tag card_key_result do %>
+  <div class="flex items-start justify-between p-2 bg-gray-50 rounded-lg">
+    <div class="flex-1 min-w-0">
+      <div class="text-xs text-gray-500 truncate"><%= card_key_result.key_result.objective.title %></div>
+      <div class="text-sm font-medium text-gray-800 truncate"><%= card_key_result.key_result.title %></div>
+      <% if card_key_result.expected_impact.present? %>
+        <div class="text-xs text-gray-600 mt-1"><%= card_key_result.expected_impact %></div>
+      <% end %>
+      <div class="flex items-center space-x-2 mt-1">
+        <div class="flex-1 bg-gray-200 rounded-full h-1">
+          <div class="bg-blue-500 h-1 rounded-full" style="width: <%= card_key_result.key_result.progress_percentage %>%"></div>
+        </div>
+        <span class="text-xs text-gray-500"><%= card_key_result.key_result.progress_percentage %>%</span>
+      </div>
+    </div>
+    <%= button_to product_card_key_result_path(card_key_result.card.product, card_key_result.card, card_key_result),
+        method: :delete,
+        class: "ml-2 text-gray-400 hover:text-red-500 p-1",
+        data: { turbo_confirm: "Unlink this key result?" } do %>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    <% end %>
+  </div>
+<% end %>

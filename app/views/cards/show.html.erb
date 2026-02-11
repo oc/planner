@@ -116,6 +116,27 @@
       </div>
 
       <div>
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="text-sm font-medium text-gray-700">
+            OKR Linkage (<span id="okr_linkage_count"><%= @card.card_key_results.count %></span>)
+          </h3>
+          <%= link_to new_product_card_key_result_path(@product, @card),
+              class: "text-xs text-blue-600 hover:text-blue-700",
+              data: { turbo_frame: "modal" } do %>
+            + Link to Key Result
+          <% end %>
+        </div>
+        <div id="okr_linkages" class="space-y-2">
+          <% @card.card_key_results.includes(key_result: :objective).each do |ckr| %>
+            <%= render partial: "card_key_results/card_key_result", locals: { card_key_result: ckr } %>
+          <% end %>
+        </div>
+        <% if @card.card_key_results.empty? %>
+          <p class="text-sm text-gray-500">Not linked to any key results.</p>
+        <% end %>
+      </div>
+
+      <div>
         <h3 class="text-sm font-medium text-gray-700 mb-2">
           Comments (<%= @card.comments.count %>)
         </h3>
