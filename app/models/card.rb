@@ -20,8 +20,8 @@ class Card < ApplicationRecord
     jtbd: "purple"
   }.freeze
 
-  enum :card_type, { opportunity: 0, feature: 1, task: 2, issue: 3, jtbd: 4 }
-  enum :stage, STAGES.each_with_index.to_h { |s, i| [s.to_sym, i] }
+  enum :card_type, { opportunity: 0, feature: 1, task: 2, issue: 3, jtbd: 4 }, prefix: :type
+  enum :stage, STAGES.each_with_index.to_h { |s, i| [s.to_sym, i] }, prefix: :stage
   enum :priority, { critical: 0, high: 1, medium: 2, low: 3 }
 
   belongs_to :product
@@ -40,7 +40,7 @@ class Card < ApplicationRecord
 
   acts_as_list scope: [:product_id, :stage]
 
-  scope :in_stage, ->(stage) { where(stage: stage) }
+  scope :in_stage, ->(stage_name) { where(stage: stages[stage_name.to_s]) }
   scope :ordered, -> { order(position: :asc) }
 
   def type_color

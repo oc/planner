@@ -1,0 +1,62 @@
+<%
+  type_colors = {
+    "opportunity" => "border-blue-500",
+    "feature" => "border-green-500",
+    "task" => "border-yellow-500",
+    "issue" => "border-red-500",
+    "jtbd" => "border-purple-500"
+  }
+
+  type_icons = {
+    "opportunity" => "🎯",
+    "feature" => "⭐",
+    "task" => "✓",
+    "issue" => "🐛",
+    "jtbd" => "👤"
+  }
+
+  priority_badges = {
+    "critical" => "bg-red-100 text-red-800",
+    "high" => "bg-orange-100 text-orange-800"
+  }
+
+  border_class = type_colors[card.card_type] || "border-gray-300"
+  icon = type_icons[card.card_type] || "📋"
+  completed, total = card.gate_completion_count
+%>
+
+<%= turbo_frame_tag dom_id(card) do %>
+  <div class="bg-white rounded-lg shadow-sm border-t-4 <%= border_class %> p-3 cursor-move hover:shadow-md transition-shadow"
+       data-card-id="<%= card.id %>"
+       data-kanban-target="card"
+       draggable="true">
+    <div class="flex items-start justify-between">
+      <div class="flex items-center space-x-2">
+        <span class="text-sm"><%= icon %></span>
+        <%= link_to card.title,
+            product_card_path(card.product, card),
+            class: "text-sm font-medium text-gray-900 hover:text-blue-600",
+            data: { turbo_frame: "card_detail" } %>
+      </div>
+    </div>
+
+    <div class="mt-2 flex items-center justify-between">
+      <div class="flex items-center space-x-2">
+        <% if card.owner.avatar.present? %>
+          <img src="<%= card.owner.avatar %>" alt="<%= card.owner.name %>" class="w-5 h-5 rounded-full">
+        <% end %>
+        <% if total > 0 %>
+          <span class="text-xs text-gray-500" title="Gate progress">
+            <%= completed %>/<%= total %> ✓
+          </span>
+        <% end %>
+      </div>
+
+      <% if card.critical? || card.high? %>
+        <span class="text-xs px-1.5 py-0.5 rounded <%= priority_badges[card.priority] %>">
+          <%= card.priority.upcase %>
+        </span>
+      <% end %>
+    </div>
+  </div>
+<% end %>

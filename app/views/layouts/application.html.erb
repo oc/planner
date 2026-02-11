@@ -22,7 +22,40 @@
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
-  <body>
-    <%= yield %>
+  <body class="bg-gray-50 min-h-screen">
+    <% if Current.user %>
+      <nav class="bg-white border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex justify-between h-14">
+            <div class="flex items-center space-x-8">
+              <%= link_to "ProductPlanner", root_path, class: "text-lg font-semibold text-gray-900" %>
+              <%= link_to "Products", products_path, class: "text-sm text-gray-600 hover:text-gray-900" %>
+            </div>
+            <div class="flex items-center space-x-4">
+              <span class="text-sm text-gray-600"><%= Current.user.name %></span>
+              <%= button_to "Sign out", session_path(Current.session), method: :delete, class: "text-sm text-gray-600 hover:text-gray-900" %>
+            </div>
+          </div>
+        </div>
+      </nav>
+    <% end %>
+
+    <% if notice.present? %>
+      <div class="bg-green-50 border-l-4 border-green-400 p-4 mb-4">
+        <p class="text-green-700"><%= notice %></p>
+      </div>
+    <% end %>
+
+    <% if alert.present? %>
+      <div class="bg-red-50 border-l-4 border-red-400 p-4 mb-4">
+        <p class="text-red-700"><%= alert %></p>
+      </div>
+    <% end %>
+
+    <main>
+      <%= yield %>
+    </main>
+
+    <%= turbo_frame_tag "modal" %>
   </body>
 </html>

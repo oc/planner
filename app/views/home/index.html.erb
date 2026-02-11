@@ -1,23 +1,47 @@
-<p style="color: green"><%= notice %></p>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="mb-8">
+    <h1 class="text-2xl font-bold text-gray-900">Welcome, <%= Current.user.name %></h1>
+    <p class="text-gray-500 mt-1">Your product development dashboard</p>
+  </div>
 
-<p>Signed as <%= Current.user.email %></p>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <div class="bg-white rounded-lg shadow p-6">
+      <h3 class="text-sm font-medium text-gray-500">Products</h3>
+      <p class="text-3xl font-bold text-gray-900 mt-2"><%= Current.user.products.count %></p>
+    </div>
+    <div class="bg-white rounded-lg shadow p-6">
+      <h3 class="text-sm font-medium text-gray-500">My Cards</h3>
+      <p class="text-3xl font-bold text-gray-900 mt-2"><%= Current.user.owned_cards.count %></p>
+    </div>
+    <div class="bg-white rounded-lg shadow p-6">
+      <h3 class="text-sm font-medium text-gray-500">In Progress</h3>
+      <p class="text-3xl font-bold text-gray-900 mt-2"><%= Current.user.owned_cards.in_stage(:build).count %></p>
+    </div>
+  </div>
 
-<h2>Login and verification</h2>
-
-<div>
-  <%= link_to "Change password", edit_password_path %>
+  <div class="bg-white rounded-lg shadow">
+    <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+      <h2 class="text-lg font-semibold text-gray-900">Your Products</h2>
+      <%= link_to "View all →", products_path, class: "text-sm text-blue-600 hover:text-blue-700" %>
+    </div>
+    <div class="divide-y divide-gray-200">
+      <% Current.user.products.active.limit(5).each do |product| %>
+        <%= link_to product_path(product), class: "block px-6 py-4 hover:bg-gray-50" do %>
+          <div class="flex justify-between items-center">
+            <div>
+              <h3 class="font-medium text-gray-900"><%= product.name %></h3>
+              <p class="text-sm text-gray-500"><%= product.cards.count %> cards</p>
+            </div>
+            <span class="text-gray-400">→</span>
+          </div>
+        <% end %>
+      <% end %>
+      <% if Current.user.products.empty? %>
+        <div class="px-6 py-8 text-center">
+          <p class="text-gray-500 mb-4">No products yet. Create your first product to get started.</p>
+          <%= link_to "Create Product", new_product_path, class: "text-blue-600 hover:text-blue-700" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
 </div>
-
-<div>
-  <%= link_to "Change email address", edit_identity_email_path %>
-</div>
-
-<h2>Access history</h2>
-
-<div>
-  <%= link_to "Devices & Sessions", sessions_path %>
-</div>
-
-<br>
-
-<%= button_to "Log out", Current.session, method: :delete %>

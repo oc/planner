@@ -1,0 +1,150 @@
+<%
+  type_colors = {
+    "opportunity" => "bg-blue-100 text-blue-800",
+    "feature" => "bg-green-100 text-green-800",
+    "task" => "bg-yellow-100 text-yellow-800",
+    "issue" => "bg-red-100 text-red-800",
+    "jtbd" => "bg-purple-100 text-purple-800"
+  }
+  type_class = type_colors[@card.card_type] || "bg-gray-100 text-gray-800"
+%>
+
+<%= turbo_frame_tag "card_detail" do %>
+  <div class="fixed inset-y-0 right-0 w-full max-w-md bg-white shadow-xl overflow-y-auto z-40" data-controller="slide-over">
+    <div class="sticky top-0 bg-white border-b border-gray-200 px-4 py-3 flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <%= link_to "← Back", product_path(@product), class: "text-sm text-gray-600 hover:text-gray-900" %>
+      </div>
+      <div class="flex items-center space-x-2">
+        <%= link_to "Edit", edit_product_card_path(@product, @card),
+            class: "text-sm text-blue-600 hover:text-blue-700",
+            data: { turbo_frame: "modal" } %>
+        <%= button_to "Delete", product_card_path(@product, @card),
+            method: :delete,
+            class: "text-sm text-red-600 hover:text-red-700",
+            data: { turbo_confirm: "Are you sure?" } %>
+      </div>
+    </div>
+
+    <div class="p-4 space-y-6">
+      <div>
+        <span class="inline-block px-2 py-1 text-xs font-medium rounded <%= type_class %> uppercase">
+          <%= @card.card_type %>
+        </span>
+        <h1 class="mt-2 text-xl font-semibold text-gray-900"><%= @card.title %></h1>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4 text-sm">
+        <div>
+          <span class="text-gray-500">Owner</span>
+          <div class="flex items-center mt-1">
+            <img src="<%= @card.owner.avatar %>" alt="<%= @card.owner.name %>" class="w-6 h-6 rounded-full mr-2">
+            <span class="text-gray-900"><%= @card.owner.name %></span>
+          </div>
+        </div>
+        <div>
+          <span class="text-gray-500">Stage</span>
+          <p class="text-gray-900 capitalize"><%= @card.stage.humanize %></p>
+        </div>
+        <div>
+          <span class="text-gray-500">Priority</span>
+          <p class="text-gray-900 capitalize"><%= @card.priority %></p>
+        </div>
+        <div>
+          <span class="text-gray-500">Created</span>
+          <p class="text-gray-900"><%= time_ago_in_words(@card.created_at) %> ago</p>
+        </div>
+      </div>
+
+      <% if @card.description.present? %>
+        <div>
+          <h3 class="text-sm font-medium text-gray-700 mb-2">Description</h3>
+          <div class="text-sm text-gray-600 prose prose-sm max-w-none">
+            <%= simple_format(@card.description) %>
+          </div>
+        </div>
+      <% end %>
+
+      <div>
+        <h3 class="text-sm font-medium text-gray-700 mb-2">
+          Gate Checklist (<%= @card.stage.humanize %>)
+        </h3>
+        <div class="space-y-2">
+          <% @card.current_gate_requirements.each do |requirement| %>
+            <label class="flex items-center space-x-2">
+              <input type="checkbox"
+                     <%= "checked" if @card.gate_complete?(requirement) %>
+                     class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                     data-card-id="<%= @card.id %>"
+                     data-gate="<%= requirement %>">
+              <span class="text-sm text-gray-700"><%= requirement.humanize %></span>
+            </label>
+          <% end %>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-medium text-gray-700 mb-2">
+          Scenarios (<%= @card.scenarios.count %>)
+        </h3>
+        <% if @card.scenarios.any? %>
+          <div class="space-y-2">
+            <% @card.scenarios.ordered.each do |scenario| %>
+              <div class="bg-gray-50 rounded p-3 text-sm">
+                <div class="font-medium text-gray-900"><%= scenario.title %></div>
+                <% if scenario.given.present? %>
+                  <div class="mt-1 text-gray-600">
+                    <span class="text-gray-500">Given:</span> <%= scenario.given %>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        <% else %>
+          <p class="text-sm text-gray-500">No scenarios defined yet.</p>
+        <% end %>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-medium text-gray-700 mb-2">
+          Comments (<%= @card.comments.count %>)
+        </h3>
+        <div class="space-y-3">
+          <% @card.comments.recent.limit(5).each do |comment| %>
+            <div class="flex space-x-2">
+              <img src="<%= comment.user.avatar %>" alt="<%= comment.user.name %>" class="w-6 h-6 rounded-full">
+              <div>
+                <div class="text-sm">
+                  <span class="font-medium text-gray-900"><%= comment.user.name %></span>
+                  <span class="text-gray-500"><%= time_ago_in_words(comment.created_at) %> ago</span>
+                </div>
+                <p class="text-sm text-gray-600"><%= comment.body %></p>
+              </div>
+            </div>
+          <% end %>
+        </div>
+
+        <%= form_with url: product_card_comments_path(@product, @card), class: "mt-3" do |form| %>
+          <%= form.text_area :body,
+              placeholder: "Add a comment...",
+              rows: 2,
+              class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" %>
+          <%= form.submit "Comment", class: "mt-2 bg-blue-600 text-white px-3 py-1.5 rounded text-sm font-medium hover:bg-blue-700 cursor-pointer" %>
+        <% end %>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-medium text-gray-700 mb-2">Activity</h3>
+        <div class="space-y-2">
+          <% @card.activities.recent.limit(10).each do |activity| %>
+            <div class="text-sm text-gray-600">
+              <span class="font-medium"><%= activity.user&.name || "System" %></span>
+              <%= activity.action %>
+              <span class="text-gray-400"><%= time_ago_in_words(activity.created_at) %> ago</span>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

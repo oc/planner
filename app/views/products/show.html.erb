@@ -1,0 +1,53 @@
+<div class="h-[calc(100vh-3.5rem)] flex flex-col">
+  <div class="bg-white border-b border-gray-200 px-4 py-3">
+    <div class="flex justify-between items-center">
+      <div class="flex items-center space-x-4">
+        <h1 class="text-xl font-semibold text-gray-900"><%= @product.name %></h1>
+        <span class="text-sm text-gray-500"><%= @product.cards.count %> cards</span>
+      </div>
+      <div class="flex items-center space-x-3">
+        <%= link_to new_product_card_path(@product),
+            class: "bg-blue-600 text-white px-3 py-1.5 rounded text-sm font-medium hover:bg-blue-700",
+            data: { turbo_frame: "modal" } do %>
+          + New Card
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex-1 overflow-x-auto p-4" data-controller="kanban" data-kanban-product-slug-value="<%= @product.slug %>">
+    <div class="flex space-x-4 h-full">
+      <% Card::STAGES.each do |stage| %>
+        <div class="flex-shrink-0 w-72 flex flex-col bg-gray-100 rounded-lg">
+          <div class="px-3 py-2 border-b border-gray-200">
+            <div class="flex justify-between items-center">
+              <h3 class="text-sm font-semibold text-gray-700 capitalize"><%= stage.humanize %></h3>
+              <span class="text-xs text-gray-500 bg-gray-200 px-2 py-0.5 rounded-full">
+                <%= (@cards_by_stage[stage] || []).count %>
+              </span>
+            </div>
+          </div>
+
+          <div class="flex-1 overflow-y-auto p-2 space-y-2"
+               data-kanban-target="column"
+               data-stage="<%= stage %>"
+               id="stage-<%= stage %>">
+            <% (@cards_by_stage[stage] || []).each do |card| %>
+              <%= render partial: "cards/card", locals: { card: card } %>
+            <% end %>
+          </div>
+
+          <div class="p-2 border-t border-gray-200">
+            <%= link_to new_product_card_path(@product, stage: stage),
+                class: "block w-full text-center text-sm text-gray-500 hover:text-gray-700 py-1",
+                data: { turbo_frame: "modal" } do %>
+              + Add card
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<%= turbo_frame_tag "card_detail" %>
