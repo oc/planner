@@ -112,12 +112,14 @@ Activity (audit log)
 
 ## Implementation Phases
 
-### Phase 1: Foundation (MVP)
-- Rails setup with PostgreSQL, Tailwind, Hotwire
-- Core models: User, Product, Membership, Card
-- Basic Kanban board with drag-drop
-- Card detail slide-over
-- Comments
+### Phase 1: Foundation (MVP) ✅ COMPLETE
+- Rails 8 setup with PostgreSQL, Tailwind, Hotwire
+- Authentication with authentication-zero
+- Core models: User (with roles), Product, Membership, Card, Comment, Scenario, Activity, ExternalLink
+- Kanban board with drag-drop (Stimulus controller)
+- Card detail slide-over panel
+- Comments with Turbo Stream updates
+- Seed data with ProductPlanner product (dogfooding)
 
 ### Phase 2: Process Enforcement
 - Gate validation and enforcement
