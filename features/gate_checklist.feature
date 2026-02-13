@@ -1,5 +1,6 @@
 # Feature: Gate Checklist
-# GitHub Issue: To be linked after creation
+# GitHub Issue: https://github.com/oc/planner/issues/7
+# ProductPlanner Card: "Gate Checklist Enforcement"
 #
 # Each stage in the product process has specific gate requirements that should
 # be completed before advancing. Gates are stored in the card's gate_checklist

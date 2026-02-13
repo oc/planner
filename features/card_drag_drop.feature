@@ -1,5 +1,6 @@
 # Feature: Card Drag-Drop
-# GitHub Issue: To be linked after creation
+# GitHub Issue: https://github.com/oc/planner/issues/6
+# ProductPlanner Card: "Card Drag-Drop Between Stages"
 #
 # Cards can be dragged between stages on the Kanban board. Moving forward
 # through stages triggers gate requirement checks. Moving backward is always

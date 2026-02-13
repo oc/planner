@@ -1,5 +1,6 @@
 # Feature: Scenarios (Given/When/Then)
-# GitHub Issue: To be linked after creation
+# GitHub Issue: https://github.com/oc/planner/issues/8
+# ProductPlanner Card: "Scenarios (Given/When/Then)"
 #
 # Scenarios are acceptance criteria written in Given/When/Then format.
 # They are associated with cards and help define when a feature is complete.

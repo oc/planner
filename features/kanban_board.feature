@@ -1,5 +1,6 @@
 # Feature: Kanban Board
-# GitHub Issue: To be linked after creation
+# GitHub Issue: https://github.com/oc/planner/issues/5
+# ProductPlanner Card: "Kanban Board with 8-Stage Workflow"
 #
 # The Kanban board is the primary view for visualizing cards moving through
 # the 8-stage product process defined in PRODUCT_PROCESS.md:

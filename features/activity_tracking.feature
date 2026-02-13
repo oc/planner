@@ -1,5 +1,6 @@
 # Feature: Activity Tracking
-# GitHub Issue: To be linked after creation
+# GitHub Issue: https://github.com/oc/planner/issues/10
+# ProductPlanner Card: "Activity Tracking"
 #
 # All changes to cards are automatically tracked via the Trackable concern.
 # Activity records capture user, action, and change data.

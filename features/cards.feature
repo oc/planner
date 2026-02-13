@@ -1,5 +1,6 @@
 # Feature: Cards CRUD
-# GitHub Issue: To be linked after creation
+# GitHub Issue: https://github.com/oc/planner/issues/11
+# ProductPlanner Card: "Cards CRUD with Type-Specific Metadata"
 #
 # Cards are the work items that move through the product process stages.
 # Each card has a type (opportunity, feature, task, issue, jtbd) with

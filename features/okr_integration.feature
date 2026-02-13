@@ -1,5 +1,6 @@
 # Feature: OKR Integration
-# GitHub Issue: To be linked after creation
+# GitHub Issue: https://github.com/oc/planner/issues/9
+# ProductPlanner Card: "OKR Integration"
 #
 # OKRs (Objectives and Key Results) can be defined at company or product level.
 # Cards link to key results via CardKeyResult join table.

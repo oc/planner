@@ -90,10 +90,10 @@ kr_cucumber = KeyResult.find_or_create_by!(objective: quality_objective, title: 
 end
 
 kr_issues = KeyResult.find_or_create_by!(objective: quality_objective, title: "GitHub issues linked to all features") do |kr|
-  kr.target_value = 6
-  kr.current_value = 0
+  kr.target_value = 7
+  kr.current_value = 7
   kr.unit = "features"
-  kr.status = :behind
+  kr.status = :achieved
 end
 
 puts "Created #{Objective.count} objectives and #{KeyResult.count} key results"
@@ -166,7 +166,7 @@ kanban_card = create_traced_card(
 
       ## Technical References
       - Feature File: features/kanban_board.feature
-      - GitHub Issue: #1 (to be created)
+      - GitHub Issue: https://github.com/oc/planner/issues/5
 
       ## Implementation
       - Controller: ProductsController#show
@@ -207,7 +207,7 @@ dragdrop_card = create_traced_card(
 
       ## Technical References
       - Feature File: features/card_drag_drop.feature
-      - GitHub Issue: #2 (to be created)
+      - GitHub Issue: https://github.com/oc/planner/issues/6
 
       ## Implementation
       - Stimulus: app/javascript/controllers/kanban_controller.js
@@ -248,7 +248,7 @@ gates_card = create_traced_card(
 
       ## Technical References
       - Feature File: features/gate_checklist.feature
-      - GitHub Issue: #3 (to be created)
+      - GitHub Issue: https://github.com/oc/planner/issues/7
 
       ## Implementation
       - Model: Card#gate_checklist (JSONB), Card#gate_complete?, Card#can_advance?
@@ -289,7 +289,7 @@ scenarios_card = create_traced_card(
 
       ## Technical References
       - Feature File: features/scenarios.feature
-      - GitHub Issue: #4 (to be created)
+      - GitHub Issue: https://github.com/oc/planner/issues/8
 
       ## Implementation
       - Model: Scenario (belongs_to :card)
@@ -330,7 +330,7 @@ okr_card = create_traced_card(
 
       ## Technical References
       - Feature File: features/okr_integration.feature
-      - GitHub Issue: #5 (to be created)
+      - GitHub Issue: https://github.com/oc/planner/issues/9
 
       ## Implementation
       - Models: Objective, KeyResult, CardKeyResult
@@ -372,7 +372,7 @@ activity_card = create_traced_card(
 
       ## Technical References
       - Feature File: features/activity_tracking.feature
-      - GitHub Issue: #6 (to be created)
+      - GitHub Issue: https://github.com/oc/planner/issues/10
 
       ## Implementation
       - Model: Activity (polymorphic trackable)
