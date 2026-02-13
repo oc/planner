@@ -24,7 +24,7 @@ gem "bcrypt", "~> 3.1.7"
 gem "authentication-zero"
 
 # Pagination
-gem "pagy", "~> 9.0"
+gem "pagy", "~> 43.2"
 
 # Card ordering
 gem "acts_as_list"
