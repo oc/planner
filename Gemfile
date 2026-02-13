@@ -58,6 +58,12 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  # BDD testing with Cucumber
+  gem "cucumber-rails", require: false
+  gem "database_cleaner-active_record"
+  gem "capybara"
+  gem "selenium-webdriver"
 end
 
 group :development do
